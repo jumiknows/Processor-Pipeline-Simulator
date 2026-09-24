@@ -1,3 +1,3 @@
-files/
 *.o
-proj
+pipeline_simulator
+.DS_Store

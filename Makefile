@@ -1,24 +1,23 @@
-# Define what compiler to use and the flags.
-CXX=g++
-CCFLAGS= -g -std=c++11 -Wall -Werror
-LDLIBS= -lm
+CXX ?= g++
+CXXFLAGS ?= -std=c++17 -Wall -Wextra -Wpedantic -Werror -O2
+CPPFLAGS ?= -Iinclude
 
-# Define your target
-all: proj 
+TARGET := pipeline_simulator
+SOURCES := $(wildcard src/*.cpp)
+OBJECTS := $(SOURCES:.cpp=.o)
 
-# Define how to compile .cpp files into .o files
-%.o : %.cpp
-	$(CXX) -c $(CCFLAGS) $<
+.PHONY: all clean test
 
-# Collect all .o files into a variable
-OBJ = $(patsubst %.cpp,%.o,$(wildcard *.cpp))
+all: $(TARGET)
 
-# Link the object files into the executable
-proj: $(OBJ)
-	$(CXX) -o $@ $(OBJ) $(CCFLAGS) $(LDLIBS)
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) $(OBJECTS) -o $@
 
-# Define a rule to clean up the build
+src/%.o: src/%.cpp
+	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
+
+test: $(TARGET)
+	./tests/smoke_test.sh
+
 clean:
-	rm -f core $(OBJ) proj
-
-
+	rm -f $(OBJECTS) $(TARGET)
