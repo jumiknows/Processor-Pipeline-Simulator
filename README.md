@@ -115,3 +115,11 @@ GitHub Actions runs the same build and smoke test for pull requests.
 ## Scope
 
 This is a small systems-programming simulator built to explore pipeline scheduling and hazards. It focuses on clear pipeline behavior rather than reproducing a specific commercial CPU microarchitecture.
+
+## Collaboration
+
+This was built as a team course project and is kept as a fork so the original shared history stays visible.
+
+My contributions are also visible in that history under **Ernest Wong / jumiknows**. They include the original dependency-checking component, control-dependency handling, simulation test work, and the later repository cleanup that added the current structure, CI and documentation.
+
+Other parts of the simulator were developed by my teammate. The commit history is the source of truth for individual contributions.
