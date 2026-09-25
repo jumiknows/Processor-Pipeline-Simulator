@@ -1,0 +1,25 @@
+name: Simulator bug
+description: Report incorrect pipeline behavior or trace handling.
+title: "fix: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem
+      description: What behavior is wrong, and what should happen instead?
+    validations:
+      required: true
+  - type: textarea
+    id: trace
+    attributes:
+      label: Minimal trace
+      description: Include the smallest synthetic trace that reproduces the problem.
+    validations:
+      required: true
+  - type: textarea
+    id: result
+    attributes:
+      label: Actual and expected result
+      description: Include cycle count, IPC, or stage behavior when relevant.
+    validations:
+      required: true
