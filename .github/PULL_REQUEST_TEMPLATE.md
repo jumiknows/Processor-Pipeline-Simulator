@@ -1,19 +1,39 @@
-## Summary
+## Problem
 
-What changed and why?
+What pipeline behavior, hazard, timing, parsing, or correctness issue does this address?
 
-## Simulator behavior
+## Approach
 
-Does this change affect hazards, stage movement, cycle counts, IPC, trace parsing, or output?
+What changed in the simulator model, and why is that behavior correct?
 
-## Validation
+Explain stage ordering, hazard handling, forwarding, stalls, cycle accounting, or parser assumptions when relevant.
 
-List the build and tests you ran.
+## Verification
+
+### Automated
+
+List the compiler, build, tests, and sanitizer checks you ran.
+
+### Expected behavior
+
+For behavioral changes, provide a small trace or case with:
+
+- input instructions
+- expected cycles or IPC
+- observed cycles or IPC
+- reason for any difference from the previous implementation
+
+## Risks and limitations
+
+Describe unsupported instructions, architectural assumptions, trace-format limits, or cases that are not modeled.
+
+## References
+
+Link architecture documentation, course specification, prior issue, or other source used to determine expected behavior.
 
 ## Checklist
 
-- [ ] The change is focused on one task.
 - [ ] `make` passes.
 - [ ] `make test` passes.
 - [ ] Behavior changes have a regression test or a clear reason why not.
-- [ ] Expected cycle or IPC changes are explained.
+- [ ] Cycle or IPC claims are backed by a reproducible case.
