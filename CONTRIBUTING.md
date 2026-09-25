@@ -1,25 +1,10 @@
 # Contributing
 
-Keep simulator changes focused and easy to validate.
+Keep changes small enough to understand and test.
 
-## Workflow
+## Before a pull request
 
-1. Start from the latest default branch.
-2. Create one branch per logical change.
-3. Add or update tests when behavior changes.
-4. Run the build and smoke test.
-5. Open a pull request with the expected pipeline behavior and results.
-
-Example branches:
-
-```text
-feat/forwarding-model
-fix/control-stall
-test/load-store-hazard
-docs/trace-format
-```
-
-## Local checks
+Run:
 
 ```bash
 make clean
@@ -27,18 +12,22 @@ make
 make test
 ```
 
-The project treats compiler warnings as errors.
+If behaviour changes, add a test that shows the expected cycle count or hazard behaviour.
 
-## Pull requests
+## Workflow
 
-Use Conventional Commit-style titles such as:
+1. Start from the latest `master`.
+2. Create a short branch for one change.
+3. Make the change.
+4. Run the local checks.
+5. Open a pull request.
+
+Examples:
 
 ```text
-fix: prevent dependent instruction from advancing early
-test: cover branch stall behavior
-docs: clarify trace dependency format
+fix/control-stall
+test/load-store-hazard
+docs/trace-format
 ```
 
-Explain any change that affects cycle count, IPC, hazard behavior, or trace parsing.
-
-Prefer squash merge after CI passes.
+For simulator changes, explain any effect on cycle count, IPC, hazards or trace parsing.
