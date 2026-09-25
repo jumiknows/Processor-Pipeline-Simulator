@@ -1,0 +1,24 @@
+name: Simulator improvement
+description: Propose a focused model, test, or tooling improvement.
+title: "feat: "
+body:
+  - type: textarea
+    id: problem
+    attributes:
+      label: What should improve?
+    validations:
+      required: true
+  - type: textarea
+    id: model
+    attributes:
+      label: Proposed behavior
+      description: Describe the pipeline rule or developer improvement.
+    validations:
+      required: true
+  - type: textarea
+    id: validation
+    attributes:
+      label: Validation
+      description: How should the change be tested?
+    validations:
+      required: true

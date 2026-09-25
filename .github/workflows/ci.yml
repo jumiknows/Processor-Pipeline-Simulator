@@ -5,18 +5,47 @@ on:
     branches: [master]
   pull_request:
 
+concurrency:
+  group: pipeline-simulator-ci-${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
 jobs:
   build-and-test:
+    name: ${{ matrix.compiler }}
     runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        include:
+          - compiler: GCC
+            cxx: g++
+          - compiler: Clang
+            cxx: clang++
 
     steps:
       - uses: actions/checkout@v4
 
       - name: Build
-        run: make
+        run: make CXX=${{ matrix.cxx }}
 
       - name: Smoke test
+        run: make test CXX=${{ matrix.cxx }}
+
+  sanitizers:
+    name: Address and undefined behavior sanitizers
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build with sanitizers
+        run: |
+          make CXX=g++ CXXFLAGS="-std=c++17 -Wall -Wextra -Wpedantic -Werror -O1 -g -fsanitize=address,undefined -fno-omit-frame-pointer"
+
+      - name: Run smoke test with sanitizers
+        env:
+          ASAN_OPTIONS: detect_leaks=1
+          UBSAN_OPTIONS: halt_on_error=1
         run: make test

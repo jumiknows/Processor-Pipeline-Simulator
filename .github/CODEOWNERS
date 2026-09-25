@@ -1,0 +1,9 @@
+# Default owner
+* @jumiknows
+
+# Core simulator behavior
+/src/ @jumiknows
+/include/ @jumiknows
+/tests/ @jumiknows
+/Makefile @jumiknows
+/.github/ @jumiknows
