@@ -1,64 +1,55 @@
 # Processor Pipeline Simulator
 
-A C++17 command-line simulator for a configurable-width, five-stage processor pipeline.
+A C++17 simulator for a configurable five-stage processor pipeline.
 
-It reads an instruction trace, moves instructions through **IF → ID → EX → MEM → WB**, models common pipeline hazards, then reports instruction mix, total cycles, and IPC.
+It reads an instruction trace, models pipeline stalls and prints total cycles, instruction mix and IPC.
 
-## Quick start
+## Run it
 
 ```bash
 make
 ./pipeline_simulator examples/sample_trace.txt 1 15 2
 ```
 
-Example output:
-
-```text
-integer instructions: 46.67%
-floating point instructions: 0.00%
-branch instructions: 6.67%
-load instructions: 0.00%
-store instructions: 46.67%
-clock cycles: 21
-IPC: 0.71
-```
-
-## What it models
-
-- configurable pipeline width
-- five pipeline stages
-- data dependencies between instructions
-- branch-related control stalls
-- structural conflicts in execute and memory stages
-- instruction mix and cycle statistics
-
-## Usage
-
-```text
-./pipeline_simulator <trace-file> <start-instruction> <instruction-count> <width>
-```
-
-Example:
-
-```bash
-./pipeline_simulator examples/sample_trace.txt 1 15 2
-```
-
 Arguments:
+
+```text
+pipeline_simulator <trace-file> <start-instruction> <instruction-count> <width>
+```
 
 | Argument | Meaning |
 | --- | --- |
 | `trace-file` | Input instruction trace |
 | `start-instruction` | First instruction to simulate, starting at 1 |
 | `instruction-count` | Number of instructions to simulate |
-| `width` | Maximum instructions processed per pipeline stage each cycle |
+| `width` | Maximum instructions handled by a stage each cycle |
+
+## Pipeline
+
+The simulator uses five stages:
+
+```text
+IF
+ID
+EX
+MEM
+WB
+```
+
+It models:
+
+- data dependencies
+- branch stalls
+- execute-stage conflicts
+- memory-stage conflicts
+- configurable pipeline width
 
 ## Trace format
 
-Each line contains an instruction address, instruction type, and optional dependency addresses.
+Each line contains a hexadecimal instruction address, an instruction type and optional dependency addresses.
 
 ```text
-<hex-address>,<type>,<dependency-1>,<dependency-2>,...
+<address>,<type>,<dependency-1>,<dependency-2>,...
 ```
 
 Example:
@@ -78,48 +69,49 @@ Instruction types:
 | 4 | Load |
 | 5 | Store |
 
-The included trace is synthetic and lives at `examples/sample_trace.txt`.
+A small synthetic trace is included at `examples/sample_trace.txt`.
 
-## Project structure
+## Code map
 
-```text
-.
-├── include/                 # Pipeline data types and interfaces
-├── src/                     # Simulator and hazard logic
-├── examples/                # Sample trace
-├── tests/                   # Smoke test
-├── .github/workflows/       # CI
-└── Makefile
-```
+`src/simulation.cpp`
+Loads the trace, advances the pipeline and reports statistics.
 
-The main pieces are:
+`src/dependency_checker.cpp`
+Decides whether an instruction can move forward.
 
-- `Simulation` controls trace loading, clock cycles, and stage movement
-- `DependencyChecker` decides whether an instruction can advance
-- `PipelineManager` stores the instructions currently in each stage
-- `Instruction` represents one trace instruction and its dependencies
+`include/pipeline_manager.h`
+Stores the instructions in each stage.
 
-## Build and test
+`include/instruction.h`
+Defines the instruction type, address and dependencies.
 
-Requires a C++17 compiler and `make`.
+## Test it
 
 ```bash
-make
 make test
 ```
 
-The build enables `-Wall`, `-Wextra`, `-Wpedantic`, and `-Werror`.
+The build uses:
 
-GitHub Actions runs the same build and smoke test for pull requests.
+```text
+-Wall
+-Wextra
+-Wpedantic
+-Werror
+```
+
+GitHub Actions builds the simulator and runs the smoke test on pull requests.
 
 ## Scope
 
-This is a small systems-programming simulator built to explore pipeline scheduling and hazards. It focuses on clear pipeline behavior rather than reproducing a specific commercial CPU microarchitecture.
+This is a teaching and systems-programming simulator. It focuses on pipeline scheduling and hazards rather than reproducing a commercial CPU.
+
+The next meaningful improvement is stronger correctness testing with tiny traces that have known cycle counts. A visual timeline would be useful after the simulator can expose cycle-by-cycle state.
 
 ## Collaboration
 
-This was built as a team course project and is kept as a fork so the original shared history stays visible.
+This began as a team course project and remains a fork so the original history is visible.
 
-My contributions are also visible in that history under **Ernest Wong / jumiknows**. They include the original dependency-checking component, control-dependency handling, simulation test work, and the later repository cleanup that added the current structure, CI and documentation.
+My commits under Ernest Wong and `jumiknows` include dependency checking, control-dependency handling, simulation test work and later repository maintenance.
 
-Other parts of the simulator were developed by my teammate. The commit history is the source of truth for individual contributions.
+The commit history is the source of truth for individual contributions.
